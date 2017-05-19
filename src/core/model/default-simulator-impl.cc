@@ -139,7 +139,11 @@ DefaultSimulatorImpl::ProcessOneEvent (void)
 {
   Scheduler::Event next = m_events->RemoveNext ();
 
-  NS_ASSERT (next.key.m_ts >= m_currentTs);
+  // NS_ASSERT (next.key.m_ts >= m_currentTs);
+  if( next.key.m_ts < m_currentTs)
+  {
+    next.key.m_ts = m_currentTs;
+  }
   m_unscheduledEvents--;
 
   NS_LOG_LOGIC ("handle " << next.key.m_ts);
