@@ -53,6 +53,10 @@ UdpEchoServer::GetTypeId (void)
                    UintegerValue (0),
                    MakeUintegerAccessor (&UdpEchoServer::m_ptime),
                    MakeUintegerChecker<uint64_t> ())
+    .AddAttribute ("ScalingFactor", "Processing time scaling factor.",
+                   UintegerValue (0),
+                   MakeUintegerAccessor (&UdpEchoServer::m_sfactor),
+                   MakeUintegerChecker<uint16_t> ())
   ;
   return tid;
 }
@@ -68,6 +72,7 @@ UdpEchoServer::~UdpEchoServer()
   m_socket = 0;
   m_socket6 = 0;
   m_ptime = 0;
+  m_sfactor = 0;
 }
 
 void
@@ -174,7 +179,7 @@ UdpEchoServer::HandleRead (Ptr<Socket> socket)
         }
 
       // adding node's processing time
-      HandleProcessing();
+      HandleProcessing(packet->GetSize ());
 
       packet->RemoveAllPacketTags ();
       packet->RemoveAllByteTags ();
@@ -198,9 +203,9 @@ UdpEchoServer::HandleRead (Ptr<Socket> socket)
 }
 
 void 
-UdpEchoServer::HandleProcessing ()
+UdpEchoServer::HandleProcessing (uint32_t p_size)
 {
-  Simulator::AddProcessingTime(m_ptime);
+  Simulator::AddProcessingTime(m_ptime+((m_ptime/2)*m_sfactor*p_size/1024));
 }
 
 } // Namespace ns3
