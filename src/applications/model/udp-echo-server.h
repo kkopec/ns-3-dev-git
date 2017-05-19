@@ -73,13 +73,14 @@ private:
    *
    * This function is called by lower layers.
    */
-  void HandleProcessing ();
+  void HandleProcessing (uint32_t p_size);
 
   uint16_t m_port; //!< Port on which we listen for incoming packets.
   Ptr<Socket> m_socket; //!< IPv4 Socket
   Ptr<Socket> m_socket6; //!< IPv6 Socket
   Address m_local; //!< local multicast address
   uint64_t m_ptime; //!< server node's request processing time
+  uint16_t m_sfactor; //!< processing time multiplier
 };
 
 } // namespace ns3

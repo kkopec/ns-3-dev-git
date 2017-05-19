@@ -25,11 +25,12 @@
 
 namespace ns3 {
 
-UdpEchoServerHelper::UdpEchoServerHelper (uint16_t port, uint64_t processing_time)
+UdpEchoServerHelper::UdpEchoServerHelper (uint16_t port, uint64_t processing_time, uint16_t scaling_factor)
 {
   m_factory.SetTypeId (UdpEchoServer::GetTypeId ());
   SetAttribute ("Port", UintegerValue (port));
   SetAttribute ("ProcessingTime", UintegerValue (processing_time));
+  SetAttribute ("ScalingFactor", UintegerValue (scaling_factor));
 }
 
 void 
